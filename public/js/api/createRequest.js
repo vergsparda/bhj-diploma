@@ -13,7 +13,7 @@ const createRequest = (options = {}) => {
    urlGET += `${form}=${options.data[form]}&`;
  }
 
- xhr.open(options.method, options.method == GET ? urlGET.slice(0, -1) : options.url);
+ xhr.open(options.method, options.method == 'GET' ? urlGET.slice(0, -1) : options.url);
 
  //  в запросе имеются заголовки
 

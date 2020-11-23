@@ -39,11 +39,11 @@ class User {
     createRequest({
       data: data,
       url: `${this.url}/current`,
-      method: "GET",
-      responseType: 'JSON',
-      callback: (err, response) => {
-        if (response.user && response.success) {
-          this.setCurrent(response.user);
+      method: 'GET',
+      responseType: 'json',
+      callback: (err, data) => {
+        if (data.user && data.success) {
+          this.setCurrent(data.user);
         } else {
           this.unsetCurrent();
         }
@@ -64,11 +64,11 @@ class User {
       url: `${this.url}/login`,
       method: "POST",
       responseType: 'json',
-      callback: (err, response) => {
-        if(response.success) {
-          this.setCurrent(response.user);
+      callback: (err, data) => {
+        if(data.success) {
+          this.setCurrent(data.user);
         }
-        callback(err, response);
+        callback(err, data);
       }
     });
   }
@@ -85,11 +85,11 @@ class User {
       url: `${this.url}/register`,
       method: "POST",
       responseType: 'json',
-      callback: (err, response) => {
-        if(response.success) {
-          this.setCurrent(response.user);
+      callback: (err, data) => {
+        if(data.success) {
+          this.setCurrent(data.user);
         }
-        callback(err, response);
+        callback(err, data);
       }
     });
   }
