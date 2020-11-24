@@ -4,7 +4,6 @@
  * Имеет свойство URL, равное '/user'.
  * */
 class User {
-  static URL = '/user';
   /**
    * Устанавливает текущего пользователя в
    * локальном хранилище.
@@ -47,7 +46,7 @@ class User {
         } else {
           this.unsetCurrent();
         }
-        callback(err, data);
+        callback(err, response);
       }
     });
   }
@@ -68,7 +67,7 @@ class User {
         if(response) {
           this.setCurrent(response.user);
         }
-        callback(err, data);
+        callback(err, response);
       }
     });
   }
@@ -83,13 +82,13 @@ class User {
     createRequest({
       data: data,
       url: `${this.url}/register`,
-      method: 'POST',
+      method: "POST",
       responseType: 'json',
       callback: (err, response) => {
         if(response) {
           this.setCurrent(response.user);
         }
-        callback(err, data);
+        callback(err, response);
       }
     });
   }
