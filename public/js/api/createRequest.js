@@ -34,7 +34,7 @@ const createRequest = (options = {}) => {
    }
  });
 
- options.method == 'GET' ? xhr.send() : xhr.send(formData);
+ options.method === 'GET' ? xhr.send() : xhr.send(formData);
 
  return xhr;
 };
