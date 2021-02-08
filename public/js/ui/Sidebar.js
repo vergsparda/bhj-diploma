@@ -18,14 +18,10 @@ class Sidebar {
    * при нажатии на кнопку .sidebar-toggle
    * */
   static initToggleButton() {
-    const sideToggle = document.querySelector('.sidebar-toggle'),
-      sidebarMini = document.querySelector('.sidebar-mini');
-    sideToggle.addEventListener('click', (e) => {
+    document.querySelector('.sidebar-toggle').addEventListener('click', e => {
       e.preventDefault();
-      sidebarMini.classList.toggle('sidebar-open');
-      sidebarMini.classList.toggle('sidebar-collapse')
-
-    })
+      document.body.classList.toggle('sidebar-open');
+    });
   }
 
   /**
@@ -36,24 +32,25 @@ class Sidebar {
    * выходу устанавливает App.setState( 'init' )
    * */
   static initAuthLinks() {
-    const registerButton = document.querySelector('.menu-item_register');
-    registerButton.addEventListener('click', () => {
-      App.getModal('register').open();
-    });
+    document.querySelector('.sidebar-menu').addEventListener('click', e => {
+      e.preventDefault();
 
-    const loginButton = document.querySelector('.menu-item_login');
-    loginButton.addEventListener('click', () => {
-      App.getModal('login').open();
+      if(e.target.closest('.menu-item') == document.querySelector('.menu-item_register')) {
+        App.getModal('register').open();
+      } else if(e.target.closest('.menu-item') == document.querySelector('.menu-item_login')) {
+        App.getModal('login').open();
+      } else if(e.target.closest('.menu-item') == document.querySelector('.menu-item_logout')) {
+        User.logout({}, (err, data) => {
+          if (data.success) {
+            App.setState('init');
+            User.unsetCurrent();
+          }
+          else {
+            console.log(err);
+          }
+        });
+      }
     });
-
-    const logoutButton = document.querySelector('.menu-item_logout');
-    logoutButton.addEventListener('click', () => {
-      User.logout({}, (err, response) => {
-        if (response.success) {
-          App.setState('init');
-        }
-      })
-    })
   }
 
 }

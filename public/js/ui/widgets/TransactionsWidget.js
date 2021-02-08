@@ -11,7 +11,12 @@ class TransactionsWidget {
    * необходимо выкинуть ошибку.
    * */
   constructor( element ) {
-
+    if(element){
+      this.element = element;
+      this.registerEvents();
+    } else {
+      throw new Error ('Элемент отсутствует');
+    }
   }
   /**
    * Регистрирует обработчики нажатия на
@@ -20,6 +25,12 @@ class TransactionsWidget {
    * экземпляра окна
    * */
   registerEvents() {
-
+    this.element.addEventListener('click', e => {
+      if(e.target.classList.contains('create-income-button')){
+        App.getModal('newIncome').open();
+      } else if (e.target.classList.contains('create-expense-button')) {
+        App.getModal('newExpense').open();
+      };
+    });
   }
 }

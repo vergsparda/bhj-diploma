@@ -13,12 +13,9 @@ class AsyncForm {
    * через registerEvents()
    * */
   constructor( element ) {
-    if(!element){
-      throw new Error ('Элемент отсутствует')
-    }
+    if (!element) throw new Error('Переданный элемент не существует');
     this.element = element;
     this.registerEvents();
-
   }
 
   /**
@@ -40,18 +37,15 @@ class AsyncForm {
    * }
    * */
   getData() {
-    let formData = Array.from(this.element);
-    let data = {};
-
-    formData.forEach(item => {
-      if(item.value) {
-        data[item.name] = item.value;
-      }
-    });
+    const formData = new FormData(this.element);
+    const data = {};
+    for (const el of formData) {
+      data[el[0]] = el[1];
+    }
     return data;
   }
 
-  onSubmit( options ) {
+  onSubmit(options) {
 
   }
 

@@ -2,42 +2,40 @@
  * Основная функция для совершения запросов
  * на сервер.
  * */
-const createRequest = (options = {}) => {
-  const xhr = new XMLHttpRequest();
-  const formData = new FormData();
-  let urlGET = options.url + "?";
+const createRequest = (options) => {
+  try {
+    const xhr = new XMLHttpRequest();
+    let url = options.url;
+    const formData = new FormData(); 
 
-  for (let form in options.data) {
-    formData.append(form, options.data[form]);
-    // url для запросов типа GET
-    urlGET += `${form}=${options.data[form]}&`;
-  }
-
-  xhr.open(options.method, options.method == 'GET' ? urlGET.slice(0, -1) : options.url);
-
-  //  в запросе имеются заголовки
-
-  if (options.headers) {
-    for (let header in options.headers) {
-      xhr.setRequestHeader(header, options.headers[header]);
-    }
-  };
-
-  xhr.responseType = options.responseType;
-  xhr.withCredentials = true;
-
-  xhr.addEventListener('readystatechange', () => {
-    if (xhr.readyState === 4 && xhr.status === 200) {
-      options.callback(null, xhr.response);
+    if (options.method === 'GET') {
+        for (let el in options.data) {
+            url += `&${el}=${options.data[el]}`
+        }
+        url = url.replace('&', '?');
     } else {
-      options.callback(xhr.status, null)
+        for (let el in options.data) {
+            formData.append(el, options.data[el])
+        }
     }
-  });
 
-  if (options.method === 'GET') {
-    xhr.send()
-  } else {
+    if (options.headers) {
+        for (header in options.headers) {
+            xhr.setRequestHeader(header, options.headers[header]);
+        }
+    }
+  
+    xhr.open(options.method, url);
+    xhr.withCredentials = true;
+    xhr.addEventListener('readystatechange', () => {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+            options.callback(null, JSON.parse(xhr.response));
+        }
+    });
+
     xhr.send(formData);
+
+  } catch (e) {
+      options.callback(e, null);
   }
-  return xhr;
 };
